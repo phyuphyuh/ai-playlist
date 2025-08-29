@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import PromptInput from './components/PromptInput';
-import Playlist from './components/Playlist';
-import CustomPlayer from './components/CustomPlayer';
-import YoutubePlayer from './components/YoutubePlayer';
+// import PromptInput from './components/PromptInput';
+// import Playlist from './components/Playlist';
+// import CustomPlayer from './components/CustomPlayer';
+// import YoutubePlayer from './components/YoutubePlayer';
 import './App.css'
 
 export interface Track {
@@ -11,17 +11,17 @@ export interface Track {
   youtubeId: string;
 }
 
-interface OpenAITrack {
-  title: string;
-  artist: string;
-}
+// interface OpenAITrack {
+//   title: string;
+//   artist: string;
+// }
 
 export default function App() {
-  const [playlist, setPlaylist] = useState<Track[]>([]);
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  // const [playlist, setPlaylist] = useState<Track[]>([]);
+  // const [currentIndex, setCurrentIndex] = useState<number>(0);
+  // const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
+  // const [error, setError] = useState<string | null>(null);
 
   return (
     <div className='min-h-screen bg-gray-900 text-white'>
