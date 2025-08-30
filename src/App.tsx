@@ -142,6 +142,12 @@ export default function App() {
               Playlist: {playlist.length} tracks
             </p>
             <p className="text-gray-400">
+              Current Index: {currentIndex}
+            </p>
+            <p className="text-gray-400">
+              Is Playing: {isPlaying.toString()}
+            </p>
+            <p className="text-gray-400">
               Loading: {loading.toString()}
             </p>
             {error && (
@@ -153,7 +159,14 @@ export default function App() {
               <div className="text-left max-w-md mx-auto bg-gray-800 p-4 rounded">
                 <h3 className="font-bold mb-2">Generated Playlist:</h3>
                 {playlist.map((track, i) => (
-                  <p key={i} className="text-sm text-gray-300">
+                  <p
+                    key={i}
+                    className={`text-sm ${
+                      i === currentIndex
+                        ? "text-blue-400 font-semibold"
+                        : "text-gray-300"
+                    }`}
+                  >
                     {track.title} - {track.artist}
                   </p>
                 ))}
