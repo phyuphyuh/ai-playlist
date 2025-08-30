@@ -30,7 +30,7 @@ export default function PromptInput({ onSubmit, loading, error }: PromptInputPro
         />
         <button
           type="submit"
-          className="mt-2 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded disabled:opacity-50"
+          className="mt-2 w-full bg-blue-600 hover:bg-blue-700 text-blue-500 py-2 px-4 rounded disabled:opacity-50"
           disabled={loading || !prompt.trim()}
         >
           {loading ? "Generating..." : "Generate Playlist"}
