@@ -1,5 +1,5 @@
 import { useState } from 'react'
-// import PromptInput from './components/PromptInput';
+import PromptInput from './components/PromptInput';
 // import Playlist from './components/Playlist';
 // import CustomPlayer from './components/CustomPlayer';
 // import YoutubePlayer from './components/YoutubePlayer';
@@ -112,9 +112,6 @@ export default function App() {
     }
   };
 
-  const handleTestAPI = () => {
-    generatePlaylist("upbeat pop songs from the 2000s");
-  };
 
   return (
     <div className='min-h-screen bg-gray-900 text-white'>
@@ -125,16 +122,11 @@ export default function App() {
         </header>
 
         <main className="space-y-8">
-          {/* Test button */}
-          <div className="text-center">
-            <button
-              onClick={handleTestAPI}
-              disabled={loading}
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white rounded-lg"
-            >
-              {loading ? "Testing API..." : "Test API"}
-            </button>
-          </div>
+          <PromptInput
+            onSubmit={generatePlaylist}
+            loading={loading}
+            error={error}
+          />
 
           {/* Debug info */}
           <div className="text-center space-y-2">
