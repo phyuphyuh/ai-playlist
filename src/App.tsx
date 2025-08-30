@@ -4,8 +4,9 @@ import PromptInput from './components/PromptInput';
 // import CustomPlayer from './components/CustomPlayer';
 // import YoutubePlayer from './components/YoutubePlayer';
 import './App.css'
+import Playlist from './components/Playlist';
 
-export interface Track {
+interface Track {
   title: string;
   artist: string;
   youtubeId: string;
@@ -112,6 +113,12 @@ export default function App() {
     }
   };
 
+  const handleSelectTrack = (index: number) => {
+    setCurrentIndex(index);
+    setIsPlaying(true);
+  };
+
+  const hasPlaylist = playlist.length > 0;
 
   return (
     <div className='min-h-screen bg-gray-900 text-white'>
@@ -127,6 +134,17 @@ export default function App() {
             loading={loading}
             error={error}
           />
+
+          { hasPlaylist && (
+            <Playlist
+              playlist={playlist}
+              currentIndex={currentIndex}
+              onSelectTrack={handleSelectTrack}/>
+          )}
+
+          <div className="text-center space-y-2 text-sm text-gray-500">
+            <p>Now Playing: {isPlaying.toString()} | Songs: {playlist.length}</p>
+          </div>
 
           {/* Debug info */}
           <div className="text-center space-y-2">
