@@ -18,7 +18,7 @@ export default function YoutubePlayer({ youtubeId, isPlaying, onPlay, onPause, o
     height: '0',
     width: '0',
     playerVars: {
-      autoplay: 0,
+      autoplay: 1,
       controls: 0,
       disablekb: 1,
       fs: 0,
@@ -47,6 +47,10 @@ export default function YoutubePlayer({ youtubeId, isPlaying, onPlay, onPause, o
   const onReady = (event: { target: YouTubePlayer }) => {
     playerRef.current = event.target;
     console.log('YouTube player ready');
+
+    if (isPlaying) {
+      event.target.playVideo();
+    }
   };
 
   // Handle state changes
@@ -73,6 +77,7 @@ export default function YoutubePlayer({ youtubeId, isPlaying, onPlay, onPause, o
     <div className="hidden">
       {youtubeId && (
         <YouTube
+          key={youtubeId}
           videoId={youtubeId}
           opts={opts}
           onReady={onReady}
