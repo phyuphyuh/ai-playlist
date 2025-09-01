@@ -8,10 +8,13 @@ interface YoutubePlayerProps {
   onPlay: () => void;
   onPause: () => void;
   onEnd: () => void;
+  onTimeUpdate?: (currentTime: number, duration: number) => void;
+  onPlayerReady?: (player: YouTubePlayer) => void;
 }
 
-export default function YoutubePlayer({ youtubeId, isPlaying, onPlay, onPause, onEnd }: YoutubePlayerProps) {
+export default function YoutubePlayer({ youtubeId, isPlaying, onPlay, onPause, onEnd, onTimeUpdate, onPlayerReady }: YoutubePlayerProps) {
   const playerRef = useRef<YouTubePlayer | null>(null);
+  const timeUpdateIntervalRef = useRef<number | null>(null);
 
   // Configure YouTube player options
   const opts: YouTubeProps['opts'] = {
@@ -30,6 +33,42 @@ export default function YoutubePlayer({ youtubeId, isPlaying, onPlay, onPause, o
     },
   };
 
+  // Set up time update interval
+  useEffect(() => {
+    // Clear any existing interval
+    if (timeUpdateIntervalRef.current !== null) {
+      window.clearInterval(timeUpdateIntervalRef.current);
+      timeUpdateIntervalRef.current = null;
+    }
+
+    // If we have a player reference and we want to track time
+    if (playerRef.current && onTimeUpdate) {
+      // Only track time when playing
+      if (isPlaying) {
+        timeUpdateIntervalRef.current = window.setInterval(() => {
+          try {
+            const currentTime = playerRef.current?.getCurrentTime() || 0;
+            const duration = playerRef.current?.getDuration() || 0;
+
+            if (duration > 0) {
+              onTimeUpdate(currentTime, duration);
+            }
+          } catch (error) {
+            console.error("Error getting player time:", error);
+          }
+        }, 1000); // Update every second
+      }
+    }
+
+    // Cleanup on unmount or when dependencies change
+    return () => {
+      if (timeUpdateIntervalRef.current !== null) {
+        window.clearInterval(timeUpdateIntervalRef.current);
+        timeUpdateIntervalRef.current = null;
+      }
+    };
+  }, [isPlaying, onTimeUpdate]);
+
   // Handle play/pause state changes
   useEffect(() => {
     if (!playerRef.current) {
@@ -47,6 +86,10 @@ export default function YoutubePlayer({ youtubeId, isPlaying, onPlay, onPause, o
   const onReady = (event: { target: YouTubePlayer }) => {
     playerRef.current = event.target;
     console.log('YouTube player ready');
+
+    if (onPlayerReady) {
+      onPlayerReady(event.target);
+    }
 
     if (isPlaying) {
       event.target.playVideo();

@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useRef } from "react";
+import { YouTubePlayer } from "react-youtube";
 import PromptInput from './components/PromptInput';
 import Playlist from './components/Playlist';
 import CustomPlayer from './components/CustomPlayer';
@@ -30,10 +31,13 @@ export default function App() {
   const [playlist, setPlaylist] = useState<Track[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [shuffle, setShuffle] = useState(false);
   const [loop, setLoop] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const playerRef = useRef<YouTubePlayer | null>(null);
 
   const fetchOpenAIPlaylist = async (userPrompt: string): Promise<OpenAITrack[]> => {
     const response = await fetch('/api/generatePlaylist', {
@@ -158,6 +162,22 @@ export default function App() {
     }
   };
 
+  const handleTimeUpdate = (time: number, totalDuration: number) => {
+    setCurrentTime(time);
+    setDuration(totalDuration);
+  };
+
+  const handleSeek = (time: number) => {
+    if (playerRef.current) {
+      playerRef.current.seekTo(time);
+      setCurrentTime(time);
+    }
+  };
+
+  const handlePlayerReady = (player: YouTubePlayer) => {
+    playerRef.current = player;
+  };
+
   const currentTrack = playlist[currentIndex] || null;
   const hasPlaylist = playlist.length > 0;
 
@@ -193,6 +213,9 @@ export default function App() {
                 onPrev={handlePrev}
                 onShuffle={handleShuffle}
                 onLoop={handleLoop}
+                onSeek={handleSeek}
+                currentTime={currentTime}
+                duration={duration}
                 shuffle={shuffle}
                 loop={loop}
                 hasNext={currentIndex < playlist.length - 1}
@@ -208,6 +231,8 @@ export default function App() {
             onPlay={handlePlay}
             onPause={handlePause}
             onEnd={handleTrackEnd}
+            onTimeUpdate={handleTimeUpdate}
+            onPlayerReady={handlePlayerReady}
           />
 
           <div className="text-center space-y-2 text-sm text-gray-500">
