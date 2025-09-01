@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import PromptInput from './components/PromptInput';
-// import Playlist from './components/Playlist';
-// import CustomPlayer from './components/CustomPlayer';
-// import YoutubePlayer from './components/YoutubePlayer';
-import './App.css'
 import Playlist from './components/Playlist';
+import CustomPlayer from './components/CustomPlayer';
+import YoutubePlayer from './components/YoutubePlayer';
+import './App.css'
 
 interface Track {
   title: string;
@@ -31,6 +30,8 @@ export default function App() {
   const [playlist, setPlaylist] = useState<Track[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [shuffle, setShuffle] = useState(false);
+  const [loop, setLoop] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -113,11 +114,51 @@ export default function App() {
     }
   };
 
+  // Player controls
+  const handlePlay = () => setIsPlaying(true);
+  const handlePause = () => setIsPlaying(false);
+  const handleTogglePlay = () => setIsPlaying(!isPlaying);
+
+  const handleNext = () => {
+    if (playlist.length === 0) return;
+
+    if (shuffle) {
+      const newIndex = Math.floor(Math.random() * playlist.length);
+      setCurrentIndex(newIndex);
+    } else if (currentIndex < playlist.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else if (loop) {
+      setCurrentIndex(0);
+    }
+  };
+
+  const handlePrev = () => {
+    if (playlist.length === 0) return;
+
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    } else if (loop) {
+      setCurrentIndex(playlist.length - 1);
+    }
+  };
+
   const handleSelectTrack = (index: number) => {
     setCurrentIndex(index);
     setIsPlaying(true);
   };
 
+  const handleShuffle = () => setShuffle(prev => !prev);
+  const handleLoop = () => setLoop(prev => !prev);
+
+  const handleTrackEnd = () => {
+    if (loop && playlist.length === 1) {
+      setIsPlaying(true);
+    } else {
+      handleNext();
+    }
+  };
+
+  const currentTrack = playlist[currentIndex] || null;
   const hasPlaylist = playlist.length > 0;
 
   return (
@@ -135,12 +176,39 @@ export default function App() {
             error={error}
           />
 
-          { hasPlaylist && (
-            <Playlist
-              playlist={playlist}
-              currentIndex={currentIndex}
-              onSelectTrack={handleSelectTrack}/>
+          {hasPlaylist && (
+            <>
+              <Playlist
+                playlist={playlist}
+                currentIndex={currentIndex}
+                onSelectTrack={handleSelectTrack}
+              />
+              <CustomPlayer
+                currentTrack={currentTrack}
+                isPlaying={isPlaying}
+                onPlay={handlePlay}
+                onPause={handlePause}
+                onTogglePlay={handleTogglePlay}
+                onNext={handleNext}
+                onPrev={handlePrev}
+                onShuffle={handleShuffle}
+                onLoop={handleLoop}
+                shuffle={shuffle}
+                loop={loop}
+                hasNext={currentIndex < playlist.length - 1}
+                hasPrev={currentIndex > 0}
+                disabled={!hasPlaylist}
+              />
+            </>
           )}
+
+          <YoutubePlayer
+            youtubeId={currentTrack?.youtubeId}
+            isPlaying={isPlaying}
+            onPlay={handlePlay}
+            onPause={handlePause}
+            onEnd={handleTrackEnd}
+          />
 
           <div className="text-center space-y-2 text-sm text-gray-500">
             <p>Now Playing: {isPlaying.toString()} | Songs: {playlist.length}</p>
@@ -164,23 +232,6 @@ export default function App() {
               <p className="text-red-400 bg-red-900/20 p-3 rounded">
                 Error: {error}
               </p>
-            )}
-            {playlist.length > 0 && (
-              <div className="text-left max-w-md mx-auto bg-gray-800 p-4 rounded">
-                <h3 className="font-bold mb-2">Generated Playlist:</h3>
-                {playlist.map((track, i) => (
-                  <p
-                    key={i}
-                    className={`text-sm ${
-                      i === currentIndex
-                        ? "text-blue-400 font-semibold"
-                        : "text-gray-300"
-                    }`}
-                  >
-                    {track.title} - {track.artist}
-                  </p>
-                ))}
-              </div>
             )}
           </div>
         </main>
