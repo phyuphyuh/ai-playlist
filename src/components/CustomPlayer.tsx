@@ -108,13 +108,15 @@ export default function CustomPlayer({
         className={className}
         title={title}
       >
-        <FontAwesomeIcon icon={faRepeat} />
-        {loopMode === "single" && (
-          <span className="absolute text-xs font-bold" style={{
-            bottom: '6px',
-            right: '8px'
-          }}>1</span>
-        )}
+        <div className="relative inline-block">
+          <FontAwesomeIcon icon={faRepeat} />
+          {loopMode === "single" && (
+            <span className="absolute text-xs font-bold" style={{
+              bottom: '-3px',
+              right: '-3px'
+            }}>1</span>
+          )}
+        </div>
       </button>
     );
   };

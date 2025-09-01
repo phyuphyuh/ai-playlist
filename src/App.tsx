@@ -188,6 +188,9 @@ export default function App() {
 
   const handleTrackEnd = () => {
     if (loopMode === "single") {
+      if (playerRef.current) {
+        playerRef.current.seekTo(0);
+      }
       setIsPlaying(true);
     } else if (loopMode === "playlist" && currentIndex === playlist.length - 1) {
       setCurrentIndex(0);
