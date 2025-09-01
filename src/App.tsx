@@ -127,19 +127,39 @@ export default function App() {
     if (playlist.length === 0) return;
 
     if (shuffle) {
-      const newIndex = Math.floor(Math.random() * playlist.length);
-      setCurrentIndex(newIndex);
+      let newIndex;
+      if (playlist.length > 1) {
+        do {
+          newIndex = Math.floor(Math.random() * playlist.length);
+        } while (newIndex === currentIndex);
+        setCurrentIndex(newIndex);
+      } else {
+        // if there's only one track, replay it
+        setCurrentIndex(0);
+        setIsPlaying(true);
+      }
     } else if (currentIndex < playlist.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else if (loop) {
-      setCurrentIndex(0);
+      setCurrentIndex(0); // loop back to beginning if at end
     }
   };
 
   const handlePrev = () => {
     if (playlist.length === 0) return;
 
-    if (currentIndex > 0) {
+    if (shuffle) {
+      let newIndex;
+      if (playlist.length > 1) {
+        do {
+          newIndex = Math.floor(Math.random() * playlist.length);
+        } while (newIndex === currentIndex);
+        setCurrentIndex(newIndex);
+      } else {
+        setCurrentIndex(0);
+        setIsPlaying(true);
+      }
+    } else if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
     } else if (loop) {
       setCurrentIndex(playlist.length - 1);
@@ -155,7 +175,10 @@ export default function App() {
   const handleLoop = () => setLoop(prev => !prev);
 
   const handleTrackEnd = () => {
-    if (loop && playlist.length === 1) {
+    if (loop && currentIndex === playlist.length - 1) {
+      setCurrentIndex(0);
+      setIsPlaying(true);
+    } else if (loop && playlist.length === 1) {
       setIsPlaying(true);
     } else {
       handleNext();
@@ -218,8 +241,8 @@ export default function App() {
                 duration={duration}
                 shuffle={shuffle}
                 loop={loop}
-                hasNext={currentIndex < playlist.length - 1}
-                hasPrev={currentIndex > 0}
+                hasNext={currentIndex < playlist.length - 1 || loop}
+                hasPrev={currentIndex > 0 || loop}
                 disabled={!hasPlaylist}
               />
             </>
