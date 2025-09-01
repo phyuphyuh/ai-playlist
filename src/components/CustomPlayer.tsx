@@ -22,7 +22,7 @@ interface CustomPlayerProps {
   currentTime?: number;
   duration?: number;
   shuffle: boolean;
-  loop: boolean;
+  loopMode: "none" | "playlist" | "single";
   hasNext: boolean;
   hasPrev: boolean;
   disabled: boolean;
@@ -40,7 +40,7 @@ export default function CustomPlayer({
   currentTime = 0,
   duration = 0,
   shuffle,
-  loop,
+  loopMode,
   hasNext,
   hasPrev,
   disabled
@@ -83,6 +83,41 @@ export default function CustomPlayer({
   if (!currentTrack || disabled) {
     return null;
   }
+
+  const renderLoopButton = () => {
+    let className = "p-2 rounded-full transition-colors ";
+    let title = "No Loop";
+
+    switch(loopMode) {
+      case "playlist":
+        className += "text-blue-400 bg-blue-400/20";
+        title = "Loop Playlist";
+        break;
+      case "single":
+        className += "text-blue-400 bg-blue-400/20";
+        title = "Loop Current Track";
+        break;
+      default: // "none"
+        className += "text-gray-400 hover:text-white hover:bg-gray-700";
+        break;
+    }
+
+    return (
+      <button
+        onClick={onLoop}
+        className={className}
+        title={title}
+      >
+        <FontAwesomeIcon icon={faRepeat} />
+        {loopMode === "single" && (
+          <span className="absolute text-xs font-bold" style={{
+            bottom: '6px',
+            right: '8px'
+          }}>1</span>
+        )}
+      </button>
+    );
+  };
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 p-4">
@@ -142,7 +177,7 @@ export default function CustomPlayer({
           {/* Previous */}
           <button
             onClick={onPrev}
-            disabled={!hasPrev && !loop}
+            disabled={!hasPrev && loopMode !== "playlist"}
             className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 disabled:text-gray-600 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors"
             title="Previous"
           >
@@ -165,7 +200,7 @@ export default function CustomPlayer({
           {/* Next */}
           <button
             onClick={onNext}
-            disabled={!hasNext && !loop}
+            disabled={!hasNext && loopMode !== "playlist"}
             className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 disabled:text-gray-600 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors"
             title="Next"
           >
@@ -173,17 +208,7 @@ export default function CustomPlayer({
           </button>
 
           {/* Loop */}
-          <button
-            onClick={onLoop}
-            className={`p-2 rounded-full transition-colors ${
-              loop
-                ? "text-blue-400 bg-blue-400/20"
-                : "text-gray-400 hover:text-white hover:bg-gray-700"
-            }`}
-            title="Loop"
-          >
-            <FontAwesomeIcon icon={faRepeat} />
-          </button>
+          {renderLoopButton()}
         </div>
       </div>
     </div>

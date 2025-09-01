@@ -21,7 +21,7 @@ export default function Playlist({ playlist, currentIndex, onSelectTrack }: Play
       {playlist.map((track, i) => (
         <p
           key={`${track.youtubeId}-${i}`}
-          className={`text-sm ${
+          className={`text-sm cursor-pointer ${
             i === currentIndex
               ? "text-blue-400 font-semibold"
               : "text-gray-300"

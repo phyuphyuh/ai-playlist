@@ -27,6 +27,8 @@ interface YoutubeResponse {
   youtubeId: string;
 }
 
+type LoopMode = "none" | "playlist" | "single";
+
 export default function App() {
   const [playlist, setPlaylist] = useState<Track[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -34,7 +36,7 @@ export default function App() {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [shuffle, setShuffle] = useState(false);
-  const [loop, setLoop] = useState(false);
+  const [loopMode, setLoopMode] = useState<LoopMode>("none"); // "none", "playlist", "single"
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const playerRef = useRef<YouTubePlayer | null>(null);
@@ -136,11 +138,13 @@ export default function App() {
       } else {
         // if there's only one track, replay it
         setCurrentIndex(0);
-        setIsPlaying(true);
       }
+    } else if (loopMode === "single") {
+      // replay current track
+      setIsPlaying(true);
     } else if (currentIndex < playlist.length - 1) {
       setCurrentIndex(currentIndex + 1);
-    } else if (loop) {
+    } else if (loopMode === "playlist") {
       setCurrentIndex(0); // loop back to beginning if at end
     }
   };
@@ -157,11 +161,12 @@ export default function App() {
         setCurrentIndex(newIndex);
       } else {
         setCurrentIndex(0);
-        setIsPlaying(true);
       }
+    } else if (loopMode === "single") {
+      setIsPlaying(true);
     } else if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
-    } else if (loop) {
+    } else if (loopMode === "playlist") {
       setCurrentIndex(playlist.length - 1);
     }
   };
@@ -172,13 +177,20 @@ export default function App() {
   };
 
   const handleShuffle = () => setShuffle(prev => !prev);
-  const handleLoop = () => setLoop(prev => !prev);
+
+  const handleLoop = () => {
+    setLoopMode(prev => {
+      if (prev === "none") return "playlist";
+      if (prev === "playlist") return "single";
+      return "none";
+    });
+  };
 
   const handleTrackEnd = () => {
-    if (loop && currentIndex === playlist.length - 1) {
-      setCurrentIndex(0);
+    if (loopMode === "single") {
       setIsPlaying(true);
-    } else if (loop && playlist.length === 1) {
+    } else if (loopMode === "playlist" && currentIndex === playlist.length - 1) {
+      setCurrentIndex(0);
       setIsPlaying(true);
     } else {
       handleNext();
@@ -240,9 +252,9 @@ export default function App() {
                 currentTime={currentTime}
                 duration={duration}
                 shuffle={shuffle}
-                loop={loop}
-                hasNext={currentIndex < playlist.length - 1 || loop}
-                hasPrev={currentIndex > 0 || loop}
+                loopMode={loopMode} // loop is true if mode is not "none"
+                hasNext={currentIndex < playlist.length - 1 || loopMode === "playlist"}
+                hasPrev={currentIndex > 0 || loopMode === "playlist"}
                 disabled={!hasPlaylist}
               />
             </>
