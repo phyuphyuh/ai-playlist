@@ -17,10 +17,10 @@ export default async function handler(req, res) {
 
   try {
     const response = await client.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-4o",
       messages: [
         { role: "system",
-          content: "You are a music expert with deep knowledge of all genres, eras, and artists. Generate a playlist of 10 songs according to the user's request and preferences. IMPORTANT: Only include REAL, VERIFIED songs that actually exist - do not make up song titles. Double-check that each song title you provide is an actual song by that artist. Consider mood, tempo, and popularity. Always return as a JSON array of { title, artist }. Do not include any explanations, commentary, or additional text."
+          content: "You are a music playlist generator. Generate a playlist of 10 songs according to the user's request and preferences. ONLY include songs that 100% EXIST with their CORRECT artists. DO NOT make up any song titles or attribute songs to the wrong artists. VERIFY each song is an actual music track by that artist before including it. Consider mood, tempo, and popularity. You know all genres, eras, and artists.  Always return as a JSON array of { title, artist }. Do not include any explanations, commentary, or additional text."
         },
         { role: "user", content: prompt },
       ],
