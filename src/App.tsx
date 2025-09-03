@@ -222,46 +222,31 @@ export default function App() {
   return (
     <div className='min-h-screen bg-gray-900 text-white'>
       <div className='container mx-auto px-4'>
-        <header className='text-center mb-8'>
+        <header className='text-center mb-8 pt-8'>
           <h1 className="text-4xl font-bold mb-2">AI Playlist Generator</h1>
           <p className="text-gray-400">Generate custom playlists with AI</p>
         </header>
 
-        <main className="space-y-8">
-          <PromptInput
-            onSubmit={generatePlaylist}
-            loading={loading}
-            error={error}
-          />
+        <main className="pb-32">
+          <div className={`transition-all duration-500 ${hasPlaylist ? 'grid grid-cols-1 md:grid-cols-2 gap-8' : 'flex justify-center'}`}>
+            <div className={`${hasPlaylist ? '' : 'w-full max-w-md'}`}>
+              <PromptInput
+                onSubmit={generatePlaylist}
+                loading={loading}
+                error={error}
+              />
+            </div>
 
-          {hasPlaylist && (
-            <>
-              <Playlist
-                playlist={playlist}
-                currentIndex={currentIndex}
-                onSelectTrack={handleSelectTrack}
-              />
-              <CustomPlayer
-                currentTrack={currentTrack}
-                isPlaying={isPlaying}
-                onPlay={handlePlay}
-                onPause={handlePause}
-                onTogglePlay={handleTogglePlay}
-                onNext={handleNext}
-                onPrev={handlePrev}
-                onShuffle={handleShuffle}
-                onLoop={handleLoop}
-                onSeek={handleSeek}
-                currentTime={currentTime}
-                duration={duration}
-                shuffle={shuffle}
-                loopMode={loopMode} // loop is true if mode is not "none"
-                hasNext={currentIndex < playlist.length - 1 || loopMode === "playlist"}
-                hasPrev={currentIndex > 0 || loopMode === "playlist"}
-                disabled={!hasPlaylist}
-              />
-            </>
-          )}
+            {hasPlaylist && (
+              <div>
+                <Playlist
+                  playlist={playlist}
+                  currentIndex={currentIndex}
+                  onSelectTrack={handleSelectTrack}
+                />
+              </div>
+            )}
+          </div>
 
           <YoutubePlayer
             youtubeId={currentTrack?.youtubeId}
@@ -272,9 +257,30 @@ export default function App() {
             onTimeUpdate={handleTimeUpdate}
             onPlayerReady={handlePlayerReady}
           />
-
         </main>
       </div>
+
+      {hasPlaylist && (
+        <CustomPlayer
+          currentTrack={currentTrack}
+          isPlaying={isPlaying}
+          onPlay={handlePlay}
+          onPause={handlePause}
+          onTogglePlay={handleTogglePlay}
+          onNext={handleNext}
+          onPrev={handlePrev}
+          onShuffle={handleShuffle}
+          onLoop={handleLoop}
+          onSeek={handleSeek}
+          currentTime={currentTime}
+          duration={duration}
+          shuffle={shuffle}
+          loopMode={loopMode} // loop is true if mode is not "none"
+          hasNext={currentIndex < playlist.length - 1 || loopMode === "playlist"}
+          hasPrev={currentIndex > 0 || loopMode === "playlist"}
+          disabled={!hasPlaylist}
+        />
+      )}
     </div>
   );
 }

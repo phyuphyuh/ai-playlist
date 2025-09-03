@@ -85,27 +85,26 @@ export default function CustomPlayer({
   }
 
   const renderLoopButton = () => {
-    let className = "p-2 rounded-full transition-colors ";
-    let title = "No Loop";
+    let title, textColor;
 
     switch(loopMode) {
       case "playlist":
-        className += "text-blue-400 bg-blue-400/20";
+        textColor = "text-blue-400 bg-blue-400/20";
         title = "Loop Playlist";
         break;
       case "single":
-        className += "text-blue-400 bg-blue-400/20";
+        textColor = "text-blue-400 bg-blue-400/20";
         title = "Loop Current Track";
         break;
-      default: // "none"
-        className += "text-gray-400 hover:text-white hover:bg-gray-700";
-        break;
+      default:
+        textColor = "text-gray-400 hover:text-white hover:bg-gray-700";
+        title = "Loop Off";
     }
 
     return (
       <button
         onClick={onLoop}
-        className={className}
+        className={`p-2 rounded-full transition-colors ${textColor}`}
         title={title}
       >
         <div className="relative inline-block">
@@ -125,15 +124,13 @@ export default function CustomPlayer({
     <div className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 p-4">
       <div className="max-w-6xl mx-auto">
         {/* Track Info */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex-1 min-w-0">
-            <h3 className="text-white font-medium truncate">
-              {currentTrack.title}
-            </h3>
-            <p className="text-gray-400 text-sm truncate">
-              {currentTrack.artist}
-            </p>
-          </div>
+        <div className="text-center mb-4">
+          <h3 className="text-white font-medium text-lg">
+            {currentTrack.title}
+          </h3>
+          <p className="text-gray-400 text-sm">
+            {currentTrack.artist}
+          </p>
         </div>
 
         {/* Progress Bar */}
@@ -189,7 +186,7 @@ export default function CustomPlayer({
           {/* Play/Pause */}
           <button
             onClick={onTogglePlay}
-            className="p-3 rounded-full bg-blue-600 hover:bg-blue-700 text-gray-400 transition-colors"
+            className="p-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors"
             title={isPlaying ? "Pause" : "Play"}
           >
             {isPlaying ? (
