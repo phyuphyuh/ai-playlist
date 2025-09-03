@@ -220,14 +220,14 @@ export default function App() {
   const hasPlaylist = playlist.length > 0;
 
   return (
-    <div className='min-h-screen bg-gray-900 text-white'>
-      <div className='container mx-auto px-4'>
+    <div className='min-h-screen bg-gray-900 text-white flex flex-col'>
+      <div className='container mx-auto px-4 flex-1'>
         <header className='text-center mb-8 pt-8'>
           <h1 className="text-4xl font-bold mb-2">AI Playlist Generator</h1>
           <p className="text-gray-400">Generate custom playlists with AI</p>
         </header>
 
-        <main className="pb-32">
+        <main className="pb-40">
           <div className={`transition-all duration-500 ${hasPlaylist ? 'grid grid-cols-1 md:grid-cols-2 gap-8' : 'flex justify-center'}`}>
             <div className={`${hasPlaylist ? '' : 'w-full max-w-md'}`}>
               <PromptInput
@@ -238,7 +238,7 @@ export default function App() {
             </div>
 
             {hasPlaylist && (
-              <div>
+              <div className="h-full">
                 <Playlist
                   playlist={playlist}
                   currentIndex={currentIndex}

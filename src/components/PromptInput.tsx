@@ -30,7 +30,7 @@ export default function PromptInput({ onSubmit, loading, error }: PromptInputPro
         />
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded disabled:opacity-50 transition-colors"
+          className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded disabled:opacity-50 transition-colors"
           disabled={loading || !prompt.trim()}
         >
           {loading ? "Generating..." : "Generate Playlist"}
