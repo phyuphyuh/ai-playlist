@@ -21,7 +21,7 @@ export default function Playlist({ playlist, currentIndex, onSelectTrack }: Play
   return (
     <div className="bg-gray-800 p-6 rounded-lg h-full flex flex-col">
       <h3 className="font-bold text-xl mb-4">Your Playlist:</h3>
-      <div className="overflow-y-auto flex-1 pr-1 -mr-1">
+      <div className="overflow-y flex-1 pr-1 -mr-1">
         <table className="w-full">
           <tbody>
             {playlist.map((track, i) => (
@@ -46,7 +46,7 @@ export default function Playlist({ playlist, currentIndex, onSelectTrack }: Play
                     </span>
                   </div>
                 </td>
-                <td className="py-3 text-right">
+                <td className="py-3 px-3 text-right">
                   <span className="text-gray-400 text-sm">
                     {track.artist}
                   </span>
