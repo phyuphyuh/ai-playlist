@@ -221,7 +221,7 @@ export default function App() {
 
   return (
     <div className='min-h-screen bg-gray-900 text-white'>
-      <div className='container mx-auto px-4 py-8'>
+      <div className='container mx-auto px-4'>
         <header className='text-center mb-8'>
           <h1 className="text-4xl font-bold mb-2">AI Playlist Generator</h1>
           <p className="text-gray-400">Generate custom playlists with AI</p>
@@ -273,30 +273,6 @@ export default function App() {
             onPlayerReady={handlePlayerReady}
           />
 
-          <div className="text-center space-y-2 text-sm text-gray-500">
-            <p>Now Playing: {isPlaying.toString()} | Songs: {playlist.length}</p>
-          </div>
-
-          {/* Debug info */}
-          <div className="text-center space-y-2">
-            <p className="text-gray-400">
-              Playlist: {playlist.length} tracks
-            </p>
-            <p className="text-gray-400">
-              Current Index: {currentIndex}
-            </p>
-            <p className="text-gray-400">
-              Is Playing: {isPlaying.toString()}
-            </p>
-            <p className="text-gray-400">
-              Loading: {loading.toString()}
-            </p>
-            {error && (
-              <p className="text-red-400 bg-red-900/20 p-3 rounded">
-                Error: {error}
-              </p>
-            )}
-          </div>
         </main>
       </div>
     </div>

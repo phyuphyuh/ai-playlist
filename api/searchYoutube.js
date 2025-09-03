@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const query = encodeURIComponent(`${title} ${artist}`);
+    const query = encodeURIComponent(`"${title}" "${artist}"`);
     const apiKey = process.env.YOUTUBE_API_KEY;
     const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${query}&key=${apiKey}`;
 
@@ -18,22 +18,47 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!data.items || data.items.length === 0) {
-      return res.status(404).json({ error: "No video found" });
+      const fallbackQuery = encodeURIComponent(`${title} ${artist}`);
+      const fallbackUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${fallbackQuery}&key=${apiKey}`;
+
+      const fallbackResponse = await fetch(fallbackUrl);
+      const fallbackData = await fallbackResponse.json();
+
+      if (!fallbackData.items || fallbackData.items.length === 0) {
+        return res.status(404).json({ error: "No video found" });
+      }
+
+      data.items = fallbackData.items;
     }
 
     const priority = (video) => {
-      const titleLower = video.snippet.title.toLowerCase();
-      const channelLower = video.snippet.channelTitle.toLowerCase();
-      const artistLower = artist.toLowerCase();
+      const videoTitleLower = video.snippet.title.toLowerCase();
+      const channelNameLower = video.snippet.channelTitle.toLowerCase();
+      const searchArtistLower = artist.toLowerCase();
+      const searchTitleLower = title.toLowerCase();
 
-      let score = channelLower.includes(artistLower) ? 0 : 10;
+      let score = 0;
 
-      if (titleLower.includes("lyric video") || titleLower.includes("lyrics")) score += 1;
-      else if (titleLower.includes("audio")) score += 2;
-      else if (titleLower.includes("music video") || titleLower.includes("video")) score += 3;
+      // Check if video title contains BOTH the song title AND artist name
+      if (videoTitleLower.includes(searchTitleLower) && videoTitleLower.includes(searchArtistLower)) {
+        score -= 30; // Very strong preference for videos that mention both title and artist
+      }
+      // Or at least the title
+      else if (videoTitleLower.includes(searchTitleLower)) {
+        score -= 15;
+      }
+
+      // Artist matching in channel name is important
+      if (channelNameLower.includes(searchArtistLower)) {
+        score -= 10;
+      }
+
+      if (videoTitleLower.includes("lyric video") || videoTitleLower.includes("lyrics")) score += 1;
+      else if (videoTitleLower.includes("audio")) score += 2;
+      else if (videoTitleLower.includes("music video") || videoTitleLower.includes("video")) score += 3;
       else score += 5;
 
-      if (titleLower.includes("official")) score -= 1;
+      if (videoTitleLower.includes("official")) score -= 2;
 
       return score;
     };
