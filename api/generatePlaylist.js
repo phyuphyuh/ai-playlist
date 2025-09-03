@@ -33,6 +33,12 @@ export default async function handler(req, res) {
     res.status(200).json(parsed);
   } catch (error) {
     console.error("Error generating playlist:", error);
-    res.status(500).json({ error: "Internal server error" });
+    // res.status(500).json({ error: "Internal server error" });
+    const errMsg = error?.response?.data?.error?.message || error.message || "Unknown error";
+
+    res.status(500).json({
+      error: errMsg,
+      raw: error.response?.data || error,
+    });
   }
 }
