@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
   try {
     const response = await client.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-4o-mini",
       messages: [
         { role: "system",
           content: "You are a music playlist generator. Generate a playlist of 10 songs according to the user's request and preferences. ONLY include songs that 100% EXIST with their CORRECT artists. DO NOT make up any song titles or attribute songs to the wrong artists. VERIFY each song is an actual music track by that artist before including it. Consider mood, tempo, and popularity. You know all genres, eras, and artists.  Always return as a JSON array of { title, artist }. Do not include any explanations, commentary, or additional text."
@@ -33,12 +33,6 @@ export default async function handler(req, res) {
     res.status(200).json(parsed);
   } catch (error) {
     console.error("Error generating playlist:", error);
-    // res.status(500).json({ error: "Internal server error" });
-    const errMsg = error?.response?.data?.error?.message || error.message || "Unknown error";
-
-    res.status(500).json({
-      error: errMsg,
-      raw: error.response?.data || error,
-    });
+    res.status(500).json({ error: "Internal server error" });
   }
 }
