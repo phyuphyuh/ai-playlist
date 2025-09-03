@@ -20,7 +20,7 @@ export default async function handler(req, res) {
       model: "gpt-4o-mini",
       messages: [
         { role: "system",
-          content: "You are a music expert with deep knowledge of all genres, eras, and artists. Generate a playlist of 10 songs according to the user's request and preferences. Consider mood, tempo, and popularity. Always return as a JSON array of { title, artist }. Do not include any explanations, commentary, or additional text."
+          content: "You are a music expert with deep knowledge of all genres, eras, and artists. Generate a playlist of 10 songs according to the user's request and preferences. IMPORTANT: Only include REAL, VERIFIED songs that actually exist - do not make up song titles. Double-check that each song title you provide is an actual song by that artist. Consider mood, tempo, and popularity. Always return as a JSON array of { title, artist }. Do not include any explanations, commentary, or additional text."
         },
         { role: "user", content: prompt },
       ],
