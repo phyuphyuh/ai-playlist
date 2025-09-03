@@ -12,14 +12,14 @@ export default async function handler(req, res) {
   try {
     const query = encodeURIComponent(`"${title}" "${artist}"`);
     const apiKey = process.env.YOUTUBE_API_KEY;
-    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${query}&key=${apiKey}`;
+    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoCategoryId=10&maxResults=5&q=${query}&key=${apiKey}`;
 
     const response = await fetch(url);
     const data = await response.json();
 
     if (!data.items || data.items.length === 0) {
       const fallbackQuery = encodeURIComponent(`${title} ${artist}`);
-      const fallbackUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${fallbackQuery}&key=${apiKey}`;
+      const fallbackUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoCategoryId=10&maxResults=5&q=${fallbackQuery}&key=${apiKey}`;
 
       const fallbackResponse = await fetch(fallbackUrl);
       const fallbackData = await fallbackResponse.json();
