@@ -221,7 +221,7 @@ export default function App() {
 
   return (
     <div className='min-h-screen bg-gray-900 text-white flex flex-col'>
-      <div className='container mx-auto px-4 flex-1 overflow-hidden'>
+      <div className='container mx-auto px-4 flex-1'>
         <header className='text-center mb-8 pt-8'>
           <h1 className="text-4xl font-bold mb-2">AI Playlist Generator</h1>
           <p className="text-gray-400">Generate custom playlists with AI</p>
@@ -238,7 +238,7 @@ export default function App() {
             </div>
 
             {hasPlaylist && (
-              <div className="h-[calc(100vh-280px)]">
+              <div className="h-[calc(100vh-300px)]">
                 <Playlist
                   playlist={playlist}
                   currentIndex={currentIndex}

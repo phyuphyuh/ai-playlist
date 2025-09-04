@@ -33,7 +33,7 @@ export default function PromptInput({ onSubmit, loading, error }: PromptInputPro
           className="bg-blue-600 hover:bg-blue-700 text-white p-2 text-sm font-medium rounded-full disabled:opacity-50 transition-colors"
           disabled={loading || !prompt.trim()}
         >
-          {loading ? "Generating..." : "Generate Playlist"}
+          {loading ? "Generating..." : "Generate"}
         </button>
         {error && <p className="text-red-500 mt-2">{error}</p>}
       </div>
