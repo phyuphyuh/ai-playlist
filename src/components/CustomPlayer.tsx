@@ -121,7 +121,7 @@ export default function CustomPlayer({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-stone-400 border-t border-stone-500 p-4">
+    <div className="fixed bottom-0 left-0 right-0 bg-stone-400 border-t border-stone-500 p-4 pb-1">
       <div className="max-w-6xl mx-auto">
         {/* Track Info */}
         <div className="text-center mb-4">

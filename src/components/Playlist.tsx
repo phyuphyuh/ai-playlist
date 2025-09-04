@@ -11,9 +11,10 @@ interface PlaylistProps {
   playlist: Track[];
   currentIndex: number;
   onSelectTrack: (index: number) => void;
+  prompt?: string;
 }
 
-export default function Playlist({ playlist, currentIndex, onSelectTrack }: PlaylistProps) {
+export default function Playlist({ playlist, currentIndex, onSelectTrack, prompt }: PlaylistProps) {
   if (playlist.length === 0) {
     return null;
   }
@@ -21,6 +22,14 @@ export default function Playlist({ playlist, currentIndex, onSelectTrack }: Play
   return (
     <div className="bg-neutral-700 p-6 rounded-lg h-full flex flex-col">
       <h3 className="font-bold text-xl mb-4">Your Playlist:</h3>
+      {prompt && (
+        <div className="mb-4 pb-3 border-b border-sky-200">
+          <p className="text-stone-400 text-sm italic">
+            "{prompt}"
+          </p>
+        </div>
+      )}
+
       <div className="overflow-y-auto flex-1 custom-scrollbar">
         <table className="w-full">
           <tbody>

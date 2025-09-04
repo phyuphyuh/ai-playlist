@@ -39,6 +39,7 @@ export default function App() {
   const [loopMode, setLoopMode] = useState<LoopMode>("none"); // "none", "playlist", "single"
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentPrompt, setCurrentPrompt] = useState<string>("");
   const playerRef = useRef<YouTubePlayer | null>(null);
 
   const fetchOpenAIPlaylist = async (userPrompt: string): Promise<OpenAITrack[]> => {
@@ -95,6 +96,7 @@ export default function App() {
 
     setError(null);
     setLoading(true);
+    setCurrentPrompt(prompt);
 
     try {
       const openAITracks = await fetchOpenAIPlaylist(prompt);
@@ -243,6 +245,7 @@ export default function App() {
                   playlist={playlist}
                   currentIndex={currentIndex}
                   onSelectTrack={handleSelectTrack}
+                  prompt={currentPrompt}
                 />
               </div>
             )}
