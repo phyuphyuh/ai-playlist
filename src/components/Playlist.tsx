@@ -21,7 +21,7 @@ export default function Playlist({ playlist, currentIndex, onSelectTrack, prompt
 
   return (
     <div className="bg-neutral-700 p-6 rounded-lg h-full flex flex-col">
-      <div className='flex justify-start'>
+      <div className='flex justify-start gap-3 align-middle'>
         <h3 className="font-bold text-xl mb-4">Your Playlist:</h3>
         {prompt && (
           <div className="mb-4 pb-3 border-b border-sky-200">
@@ -53,7 +53,7 @@ export default function Playlist({ playlist, currentIndex, onSelectTrack, prompt
                         <FontAwesomeIcon icon={faPlay} size="xs" />
                       </div>
                     )}
-                    <span className={`${i === currentIndex ? "text-sone-300 font-medium" : "text-white"}`}>
+                    <span className={`${i === currentIndex ? "text-stone-300 font-medium" : "text-white"}`}>
                       {track.title}
                     </span>
                   </div>
