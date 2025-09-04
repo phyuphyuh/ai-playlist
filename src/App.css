@@ -16,6 +16,27 @@
   background: #a8a29e;
 }
 
+.custom-range-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #d6d3d1; /* stone-400 */
+  cursor: pointer;
+  margin-top: -6px;
+}
+
+.custom-range-input::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 50%;
+  background: #d6d3d1; /* stone-400 */
+  cursor: pointer;
+}
+
+
 :root {
   font-family: "Goudy Bookletter 1911", Helvetica, serif;
 }

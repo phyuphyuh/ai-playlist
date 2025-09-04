@@ -89,22 +89,22 @@ export default function CustomPlayer({
 
     switch(loopMode) {
       case "playlist":
-        textColor = "text-blue-400 bg-blue-400/20";
+        textColor = "text-white bg-stone-300";
         title = "Loop Playlist";
         break;
       case "single":
-        textColor = "text-blue-400 bg-blue-400/20";
+        textColor = "text-white bg-stone-300";
         title = "Loop Current Track";
         break;
       default:
-        textColor = "text-gray-400 hover:text-white hover:bg-gray-700";
+        textColor = "text-stone-300 hover:text-white hover:bg-stone-300";
         title = "Loop Off";
     }
 
     return (
       <button
         onClick={onLoop}
-        className={`p-2 rounded-full transition-colors ${textColor}`}
+        className={`p-2 rounded-full cursor-pointer transition-colors ${textColor}`}
         title={title}
       >
         <div className="relative inline-block">
@@ -128,7 +128,7 @@ export default function CustomPlayer({
           <h3 className="text-white font-medium text-lg">
             {currentTrack.title}
           </h3>
-          <p className="text-neutral-400 text-sm">
+          <p className="text-neutral-700 text-sm">
             {currentTrack.artist}
           </p>
         </div>
@@ -148,12 +148,12 @@ export default function CustomPlayer({
             onMouseUp={handleSeekEnd}
             onTouchStart={handleSeekStart}
             onTouchEnd={handleSeekEnd}
-            className="w-full h-2 bg-rose-50 rounded-lg appearance-none cursor-pointer"
+            className="w-full h-2 bg-rose-50 rounded-lg appearance-none cursor-pointer custom-range-input"
             style={{
-              background: `linear-gradient(to right, #oklch(89.2% 0.058 10.001) 0%, #FFE4E2(89.2% 0.058 10.001) ${seekValue}%, #4b5563 ${seekValue}%, #4b5563 100%)`
+              background: `linear-gradient(to right, #ffe4e6 0%, #ffe4e6 ${seekValue}%, #4b5563 ${seekValue}%, #4b5563 100%)`
             }}
           />
-          <span className="text-rose-400 text-xs w-10">
+          <span className="text-sky-200 text-xs w-10">
             {formatTime(duration)}
           </span>
         </div>
@@ -163,10 +163,10 @@ export default function CustomPlayer({
           {/* Shuffle */}
           <button
             onClick={onShuffle}
-            className={`p-2 rounded-full transition-colors ${
+            className={`p-2 rounded-full transition-colors cursor-pointer ${
               shuffle
-                ? "text-sky-300 bg-rose-50"
-                : "text-stone-300 hover:text-zinc hover:bg-rose-200"
+                ? "text-white bg-stone-30"
+                : "text-stone-300 hover:text-white hover:bg-stone-300"
             }`}
             title="Shuffle"
           >
@@ -177,7 +177,7 @@ export default function CustomPlayer({
           <button
             onClick={onPrev}
             disabled={!hasPrev && loopMode !== "playlist"}
-            className="p-2 rounded-full text-stone-300 hover:text-white hover:bg-neutral-600 disabled:text-neutral-600 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors"
+            className="p-2 rounded-full cursor-pointer text-stone-300 hover:text-white hover:bg-stone-300 disabled:text-neutral-600 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors"
             title="Previous"
           >
             <FontAwesomeIcon icon={faBackward} />
@@ -186,7 +186,7 @@ export default function CustomPlayer({
           {/* Play/Pause */}
           <button
             onClick={onTogglePlay}
-            className="p-3 rounded-full bg-rose-50 hover:bg-stone-300 text-sky-300 transition-colors"
+            className="p-3 rounded-full cursor-pointer bg-rose-50 hover:bg-stone-300 text-sky-300 transition-colors"
             title={isPlaying ? "Pause" : "Play"}
           >
             {isPlaying ? (
@@ -200,7 +200,7 @@ export default function CustomPlayer({
           <button
             onClick={onNext}
             disabled={!hasNext && loopMode !== "playlist"}
-            className="p-2 rounded-full text-stone-300 hover:text-white hover:bg-stone-300 disabled:text-gray-600 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors"
+            className="p-2 rounded-full cursor-pointer text-stone-300 hover:text-white hover:bg-stone-300 disabled:text-neutral-600 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors"
             title="Next"
           >
             <FontAwesomeIcon icon={faForward} />

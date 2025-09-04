@@ -29,7 +29,7 @@ export default function Playlist({ playlist, currentIndex, onSelectTrack }: Play
                 key={`${track.youtubeId}-${i}`}
                 className={`border-b border-stone-700 last:border-0 cursor-pointer hover:bg-stone-700/50 transition-colors ${
                   i === currentIndex
-                    ? "bg-stone-900/30"
+                    ? "bg-stone-800/30"
                     : ""
                 }`}
                 onClick={() => onSelectTrack(i)}
@@ -37,17 +37,17 @@ export default function Playlist({ playlist, currentIndex, onSelectTrack }: Play
                 <td className="py-3 px-3 pr-2">
                   <div className="flex items-center">
                     {i === currentIndex && (
-                      <div className="mr-2 text-zinc-400">
+                      <div className="mr-2 text-sone-400">
                         <FontAwesomeIcon icon={faPlay} size="xs" />
                       </div>
                     )}
-                    <span className={`${i === currentIndex ? "text-zinc-400 font-medium" : "text-white"}`}>
+                    <span className={`${i === currentIndex ? "text-sone-300 font-medium" : "text-white"}`}>
                       {track.title}
                     </span>
                   </div>
                 </td>
                 <td className="py-3 px-3 text-right">
-                  <span className="text-zinc-400 text-sm">
+                  <span className="text-stone-300 text-sm">
                     {track.artist}
                   </span>
                 </td>
