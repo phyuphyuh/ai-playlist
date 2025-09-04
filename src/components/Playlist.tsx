@@ -21,14 +21,17 @@ export default function Playlist({ playlist, currentIndex, onSelectTrack, prompt
 
   return (
     <div className="bg-neutral-700 p-6 rounded-lg h-full flex flex-col">
-      <h3 className="font-bold text-xl mb-4">Your Playlist:</h3>
-      {prompt && (
-        <div className="mb-4 pb-3 border-b border-sky-200">
-          <p className="text-stone-400 text-sm italic">
-            "{prompt}"
-          </p>
-        </div>
-      )}
+      <div className='flex justify-start'>
+        <h3 className="font-bold text-xl mb-4">Your Playlist:</h3>
+        {prompt && (
+          <div className="mb-4 pb-3 border-b border-sky-200">
+            <p className="text-stone-400 text-sm italic">
+              "{prompt}"
+            </p>
+          </div>
+        )}
+      </div>
+
 
       <div className="overflow-y-auto flex-1 custom-scrollbar">
         <table className="w-full">
@@ -46,7 +49,7 @@ export default function Playlist({ playlist, currentIndex, onSelectTrack, prompt
                 <td className="py-3 px-3 pr-2">
                   <div className="flex items-center">
                     {i === currentIndex && (
-                      <div className="mr-2 text-sone-400">
+                      <div className="mr-2 text-sky-200">
                         <FontAwesomeIcon icon={faPlay} size="xs" />
                       </div>
                     )}
