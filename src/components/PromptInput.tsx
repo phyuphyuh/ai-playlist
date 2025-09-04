@@ -25,15 +25,15 @@ export default function PromptInput({ onSubmit, loading, error }: PromptInputPro
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="Describe your playlist..."
-          className="w-full p-2 px-3 rounded-full bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-blue-500 text-lg"
+          className="w-full p-2 px-3 rounded-full bg-stone-400 text-white border border-neutral-700 focus:outline-none focus:border-stone-500 text-lg"
           disabled={loading}
         />
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white p-2 text-sm font-medium rounded-full disabled:opacity-50 transition-colors"
+          className="bg-stone-500 hover:bg-zinc-700 text-white p-2 font-medium rounded-full disabled:opacity-50 transition-colors"
           disabled={loading || !prompt.trim()}
         >
-          {loading ? "Generating..." : "Generate"}
+          {loading ? "Generating..." : "Go"}
         </button>
         {error && <p className="text-red-500 mt-2">{error}</p>}
       </div>

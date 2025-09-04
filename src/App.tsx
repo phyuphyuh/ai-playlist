@@ -220,7 +220,7 @@ export default function App() {
   const hasPlaylist = playlist.length > 0;
 
   return (
-    <div className='min-h-screen bg-gray-900 text-white flex flex-col'>
+    <div className='min-h-screen bg-neutral-800 text-white flex flex-col'>
       <div className='container mx-auto px-4 flex-1'>
         <header className='text-center mb-8 pt-8'>
           <h1 className="text-4xl font-bold mb-2">AI Playlist Generator</h1>

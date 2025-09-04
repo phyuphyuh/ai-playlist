@@ -16,6 +16,6 @@
   background: rgba(59, 130, 246, 0.7);
 }
 
-body {
+:root {
   font-family: "Goudy Bookletter 1911", Helvetica, serif;
 }
