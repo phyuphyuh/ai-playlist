@@ -121,21 +121,21 @@ export default function CustomPlayer({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 p-4">
+    <div className="fixed bottom-0 left-0 right-0 bg-stone-400 border-t border-stone-500 p-4">
       <div className="max-w-6xl mx-auto">
         {/* Track Info */}
         <div className="text-center mb-4">
           <h3 className="text-white font-medium text-lg">
             {currentTrack.title}
           </h3>
-          <p className="text-gray-400 text-sm">
+          <p className="text-neutral-400 text-sm">
             {currentTrack.artist}
           </p>
         </div>
 
         {/* Progress Bar */}
         <div className="mb-4 flex items-center space-x-2">
-          <span className="text-gray-400 text-xs w-10 text-right">
+          <span className="text-sky-200 text-xs w-10 text-right">
             {formatTime(currentTime)}
           </span>
           <input
@@ -148,12 +148,12 @@ export default function CustomPlayer({
             onMouseUp={handleSeekEnd}
             onTouchStart={handleSeekStart}
             onTouchEnd={handleSeekEnd}
-            className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+            className="w-full h-2 bg-rose-50 rounded-lg appearance-none cursor-pointer"
             style={{
-              background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${seekValue}%, #4b5563 ${seekValue}%, #4b5563 100%)`
+              background: `linear-gradient(to right, #oklch(89.2% 0.058 10.001) 0%, #FFE4E2(89.2% 0.058 10.001) ${seekValue}%, #4b5563 ${seekValue}%, #4b5563 100%)`
             }}
           />
-          <span className="text-gray-400 text-xs w-10">
+          <span className="text-rose-400 text-xs w-10">
             {formatTime(duration)}
           </span>
         </div>
@@ -165,8 +165,8 @@ export default function CustomPlayer({
             onClick={onShuffle}
             className={`p-2 rounded-full transition-colors ${
               shuffle
-                ? "text-blue-400 bg-blue-400/20"
-                : "text-gray-400 hover:text-white hover:bg-gray-700"
+                ? "text-sky-300 bg-rose-50"
+                : "text-stone-300 hover:text-zinc hover:bg-rose-200"
             }`}
             title="Shuffle"
           >
@@ -177,7 +177,7 @@ export default function CustomPlayer({
           <button
             onClick={onPrev}
             disabled={!hasPrev && loopMode !== "playlist"}
-            className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 disabled:text-gray-600 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors"
+            className="p-2 rounded-full text-stone-300 hover:text-white hover:bg-neutral-600 disabled:text-neutral-600 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors"
             title="Previous"
           >
             <FontAwesomeIcon icon={faBackward} />
@@ -186,7 +186,7 @@ export default function CustomPlayer({
           {/* Play/Pause */}
           <button
             onClick={onTogglePlay}
-            className="p-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+            className="p-3 rounded-full bg-rose-50 hover:bg-stone-300 text-sky-300 transition-colors"
             title={isPlaying ? "Pause" : "Play"}
           >
             {isPlaying ? (
@@ -200,7 +200,7 @@ export default function CustomPlayer({
           <button
             onClick={onNext}
             disabled={!hasNext && loopMode !== "playlist"}
-            className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 disabled:text-gray-600 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors"
+            className="p-2 rounded-full text-stone-300 hover:text-white hover:bg-stone-300 disabled:text-gray-600 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors"
             title="Next"
           >
             <FontAwesomeIcon icon={faForward} />
