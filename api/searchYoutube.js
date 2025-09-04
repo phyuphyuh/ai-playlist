@@ -17,6 +17,10 @@ export default async function handler(req, res) {
     const response = await fetch(url);
     const data = await response.json();
 
+    console.log("YouTube API URL:", url);
+    console.log("YouTube API response:", JSON.stringify(data, null, 2));
+
+
     if (!data.items || data.items.length === 0) {
       const fallbackQuery = encodeURIComponent(`${title} ${artist}`);
       const fallbackUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${fallbackQuery}&key=${apiKey}`;
