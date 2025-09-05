@@ -22,9 +22,9 @@ export default function Playlist({ playlist, currentIndex, onSelectTrack, prompt
   return (
     <div className="bg-neutral-700 p-6 rounded-lg h-full flex flex-col">
       <div className='flex justify-start gap-5 items-center'>
-        <h3 className="font-bold text-xl mb-4">Your Playlist:</h3>
+        <h3 className="font-bold text-xl mb-4 text-neutral-400">Your Playlist:</h3>
         {prompt && (
-          <div className="mb-4 pb-3 border-b border-sky-200">
+          <div className="mb-3 pb-1 border-b border-sky-200">
             <p className="text-stone-400 text-sm italic">
               "{prompt}"
             </p>
@@ -53,13 +53,13 @@ export default function Playlist({ playlist, currentIndex, onSelectTrack, prompt
                         <FontAwesomeIcon icon={faPlay} size="xs" />
                       </div>
                     )}
-                    <span className={`${i === currentIndex ? "text-stone-300 font-medium" : "text-white"}`}>
+                    <span className={`${i === currentIndex ? "text-stone-400 font-medium" : "text-white"}`}>
                       {track.title}
                     </span>
                   </div>
                 </td>
                 <td className="py-3 px-3 text-right">
-                  <span className="text-stone-300 text-sm">
+                  <span className="text-stone-400 text-sm">
                     {track.artist}
                   </span>
                 </td>
