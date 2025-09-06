@@ -12,7 +12,7 @@ export default async function handler(req, res) {
   try {
     const query = encodeURIComponent(`"${title}" "${artist}"`);
     const apiKey = process.env.YOUTUBE_API_KEY;
-    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${query}&key=${apiKey}`;
+    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoCategoryId=10&maxResults=5&q=${query}&key=${apiKey}`;
 
     const response = await fetch(url);
     const data = await response.json();
@@ -57,12 +57,12 @@ export default async function handler(req, res) {
         score -= 10;
       }
 
-      if (videoTitleLower.includes("lyric video") || videoTitleLower.includes("lyrics")) score += 1;
-      else if (videoTitleLower.includes("audio")) score += 2;
-      else if (videoTitleLower.includes("music video") || videoTitleLower.includes("video")) score += 3;
-      else score += 5;
+      if (videoTitleLower.includes("lyric video") || videoTitleLower.includes("lyrics")) score -= 8;
+      else if (videoTitleLower.includes("audio")) score -= 7;
+      else if (videoTitleLower.includes("music video") || videoTitleLower.includes("video")) score -= 6;
+      else score += 3;
 
-      if (videoTitleLower.includes("official")) score -= 2;
+      if (videoTitleLower.includes("official")) score -= 8;
 
       return score;
     };

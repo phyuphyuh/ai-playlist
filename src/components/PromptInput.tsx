@@ -30,7 +30,7 @@ export default function PromptInput({ onSubmit, loading, error }: PromptInputPro
         />
         <button
           type="submit"
-          className="bg-stone-500 cursor-pointer hover:bg-zinc-700 text-white p-3 font-medium rounded-full disabled:opacity-50 transition-colors"
+          className="bg-stone-500 cursor-pointer hover:bg-zinc-700 text-white p-3 px-4 font-medium rounded-full disabled:opacity-50 transition-colors"
           disabled={loading || !prompt.trim()}
         >
           {loading ? "Generating..." : "Go"}
