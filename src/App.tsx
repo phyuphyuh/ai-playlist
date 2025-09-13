@@ -98,6 +98,16 @@ export default function App() {
     setLoading(true);
     setCurrentPrompt(prompt);
 
+    // Clean up previous player reference before generating new playlist
+    if (playerRef.current) {
+      try {
+        playerRef.current.destroy();
+      } catch (error) {
+        console.warn("Error destroying previous player:", error);
+      }
+      playerRef.current = null;
+    }
+
     try {
       const openAITracks = await fetchOpenAIPlaylist(prompt);
       const tracksWithYoutubeIds = await Promise.all(

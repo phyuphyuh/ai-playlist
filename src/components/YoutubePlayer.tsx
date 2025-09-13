@@ -33,6 +33,30 @@ export default function YoutubePlayer({ youtubeId, isPlaying, onPlay, onPause, o
     },
   };
 
+  // Cleanup function to destroy player and clear intervals
+  const cleanup = () => {
+    // Clear time update interval
+    if (timeUpdateIntervalRef.current !== null) {
+      window.clearInterval(timeUpdateIntervalRef.current);
+      timeUpdateIntervalRef.current = null;
+    }
+
+    // Destroy the YouTube player instance
+    if (playerRef.current) {
+      try {
+        playerRef.current.destroy();
+      } catch (error) {
+        console.warn("Error destroying YouTube player:", error);
+      }
+      playerRef.current = null;
+    }
+  };
+
+  // Clean up when component unmounts or youtubeId changes
+  useEffect(() => {
+    return cleanup;
+  }, [youtubeId]);
+
   // Set up time update interval
   useEffect(() => {
     // Clear any existing interval
@@ -120,7 +144,7 @@ export default function YoutubePlayer({ youtubeId, isPlaying, onPlay, onPause, o
     <div className="hidden">
       {youtubeId && (
         <YouTube
-          key={youtubeId}
+          key={`youtube-player-${youtubeId}`}
           videoId={youtubeId}
           opts={opts}
           onReady={onReady}
