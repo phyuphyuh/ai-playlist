@@ -1,11 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
-
-interface Track {
-  title: string;
-  artist: string;
-  youtubeId: string;
-}
+import type { Track } from '../types';
 
 interface PlaylistProps {
   playlist: Track[];

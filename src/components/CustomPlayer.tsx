@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
+import type { Track } from '../types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faForward, faBackward, faShuffle, faRepeat } from '@fortawesome/free-solid-svg-icons';
-
-interface Track {
-  title: string;
-  artist: string;
-  youtubeId: string;
-}
 
 interface CustomPlayerProps {
   currentTrack: Track | null;

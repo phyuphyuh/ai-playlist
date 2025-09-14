@@ -1,33 +1,11 @@
 import { useState, useRef } from "react";
 import { YouTubePlayer } from "react-youtube";
+import type { Track, OpenAITrack, OpenAIResponse, YoutubeResponse, LoopMode } from './types';
 import PromptInput from './components/PromptInput';
 import Playlist from './components/Playlist';
 import CustomPlayer from './components/CustomPlayer';
 import YoutubePlayer from './components/YoutubePlayer';
 import './App.css'
-
-interface Track {
-  title: string;
-  artist: string;
-  youtubeId: string;
-}
-
-interface OpenAITrack {
-  title: string;
-  artist: string;
-}
-
-interface OpenAIResponse {
-  songs?: OpenAITrack[];
-  tracks?: OpenAITrack[];
-  playlist?: OpenAITrack[];
-}
-
-interface YoutubeResponse {
-  youtubeId: string;
-}
-
-type LoopMode = "none" | "playlist" | "single";
 
 export default function App() {
   const [playlist, setPlaylist] = useState<Track[]>([]);
