@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import YouTube from "react-youtube";
 import type { YouTubeProps, YouTubePlayer } from "react-youtube";
 
@@ -33,13 +33,41 @@ export default function YoutubePlayer({ youtubeId, isPlaying, onPlay, onPause, o
     },
   };
 
-  // Cleanup function to destroy player and clear intervals
-  const cleanup = () => {
-    // Clear time update interval
+  // Function to start time tracking
+  const startTimeTracking = useCallback(() => {
+    if (timeUpdateIntervalRef.current !== null) {
+      window.clearInterval(timeUpdateIntervalRef.current);
+    }
+
+    if (playerRef.current && onTimeUpdate) {
+      timeUpdateIntervalRef.current = window.setInterval(() => {
+        try {
+          if (playerRef.current) {
+            const currentTime = playerRef.current.getCurrentTime() || 0;
+            const duration = playerRef.current.getDuration() || 0;
+
+            if (duration > 0) {
+              onTimeUpdate(currentTime, duration);
+            }
+          }
+        } catch (error) {
+          console.error("Error getting player time:", error);
+        }
+      }, 1000);
+    }
+  }, [onTimeUpdate]);
+
+  // Function to stop time tracking
+  const stopTimeTracking = useCallback(() => {
     if (timeUpdateIntervalRef.current !== null) {
       window.clearInterval(timeUpdateIntervalRef.current);
       timeUpdateIntervalRef.current = null;
     }
+  }, []);
+
+  // Cleanup function to destroy player and clear intervals
+  const cleanup = useCallback(() => {
+    stopTimeTracking();
 
     // Destroy the YouTube player instance
     if (playerRef.current) {
@@ -50,48 +78,12 @@ export default function YoutubePlayer({ youtubeId, isPlaying, onPlay, onPause, o
       }
       playerRef.current = null;
     }
-  };
+  }, [stopTimeTracking]);
 
   // Clean up when component unmounts or youtubeId changes
   useEffect(() => {
     return cleanup;
-  }, [youtubeId]);
-
-  // Set up time update interval
-  useEffect(() => {
-    // Clear any existing interval
-    if (timeUpdateIntervalRef.current !== null) {
-      window.clearInterval(timeUpdateIntervalRef.current);
-      timeUpdateIntervalRef.current = null;
-    }
-
-    // If we have a player reference and we want to track time
-    if (playerRef.current && onTimeUpdate) {
-      // Only track time when playing
-      if (isPlaying) {
-        timeUpdateIntervalRef.current = window.setInterval(() => {
-          try {
-            const currentTime = playerRef.current?.getCurrentTime() || 0;
-            const duration = playerRef.current?.getDuration() || 0;
-
-            if (duration > 0) {
-              onTimeUpdate(currentTime, duration);
-            }
-          } catch (error) {
-            console.error("Error getting player time:", error);
-          }
-        }, 1000); // Update every second
-      }
-    }
-
-    // Cleanup on unmount or when dependencies change
-    return () => {
-      if (timeUpdateIntervalRef.current !== null) {
-        window.clearInterval(timeUpdateIntervalRef.current);
-        timeUpdateIntervalRef.current = null;
-      }
-    };
-  }, [isPlaying, onTimeUpdate]);
+  }, [youtubeId, cleanup]);
 
   // Handle play/pause state changes
   useEffect(() => {
@@ -99,15 +91,21 @@ export default function YoutubePlayer({ youtubeId, isPlaying, onPlay, onPause, o
       return;
     }
 
-    if (isPlaying) {
-      playerRef.current.playVideo();
+    try {
+      if (isPlaying) {
+        playerRef.current.playVideo();
+        startTimeTracking();
     } else {
-      playerRef.current.pauseVideo();
+        playerRef.current.pauseVideo();
+        stopTimeTracking();
+      }
+    } catch (error) {
+      console.error("Error controlling YouTube player:", error);
     }
-  }, [isPlaying]);
+  }, [isPlaying, startTimeTracking, stopTimeTracking]);
 
   // Handle player ready event
-  const onReady = (event: { target: YouTubePlayer }) => {
+  const onReady = useCallback((event: { target: YouTubePlayer }) => {
     playerRef.current = event.target;
     console.log('YouTube player ready');
 
@@ -116,29 +114,43 @@ export default function YoutubePlayer({ youtubeId, isPlaying, onPlay, onPause, o
     }
 
     if (isPlaying) {
-      event.target.playVideo();
+      try {
+        event.target.playVideo();
+        startTimeTracking();
+      } catch (error) {
+        console.error("Error playing video on ready:", error);
+      }
     }
-  };
+  }, [isPlaying, onPlayerReady, startTimeTracking]);
 
   // Handle state changes
-  const onStateChange = (event: { target: YouTubePlayer; data: number }) => {
+  const onStateChange = useCallback((event: { target: YouTubePlayer; data: number }) => {
     const { data: playerState } = event;
 
     // YouTube Player States: -1 (unstarted), 0 (ended), 1 (playing), 2 (paused), 3 (buffering), 5 (video cued)
     if (playerState === 1) {
       onPlay();
+      startTimeTracking();
     } else if (playerState === 2) {
       onPause();
+      stopTimeTracking();
     } else if (playerState === 0) {
+      stopTimeTracking();
       onEnd();
+    } else if (playerState === 5) {
+      // Video cued, new vid ready
+      if (isPlaying) {
+        startTimeTracking();
+      }
     }
-  };
+  }, [onPlay, onPause, onEnd, isPlaying, startTimeTracking, stopTimeTracking]);
 
   // Handle player errors
-  const onError = (event: { target: YouTubePlayer; data: number }) => {
+  const onError = useCallback((event: { target: YouTubePlayer; data: number }) => {
     console.error('YouTube player error:', event.data);
+    stopTimeTracking();
     onEnd(); // Skip to next track on error
-  };
+  }, [onEnd, stopTimeTracking]);
 
   return (
     <div className="hidden">
