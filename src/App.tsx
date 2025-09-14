@@ -156,8 +156,10 @@ export default function App() {
       setIsPlaying(true);
     } else if (currentIndex < playlist.length - 1) {
       setCurrentIndex(currentIndex + 1);
+      setCurrentTime(0); // reset progress bar for next track
     } else if (loopMode === "playlist") {
       setCurrentIndex(0); // loop back to beginning if at end
+      setCurrentTime(0); // reset progress bar for next track
     }
   };
 
@@ -178,8 +180,10 @@ export default function App() {
       setIsPlaying(true);
     } else if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
+      setCurrentTime(0); // reset progress bar for previous track
     } else if (loopMode === "playlist") {
       setCurrentIndex(playlist.length - 1);
+      setCurrentTime(0); // reset progress bar for previous track
     }
   };
 
